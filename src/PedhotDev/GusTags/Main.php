@@ -49,7 +49,7 @@ class Main extends PluginBase {
 	}
 
 	protected function onEnable() : void {
-        $this->saveDefaultConfig();
+		$this->saveDefaultConfig();
 		$this->saveResource("tags.yml");
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		$this->tagConfig = new Config($this->getDataFolder() . "tags.yml");
