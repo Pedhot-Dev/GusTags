@@ -1,0 +1,8 @@
+## Dont change this! ##
+config-version: 0.1.0
+#######################
+
+economy:
+  provider: bedrockeconomy
+
+default-tag-price: 1000

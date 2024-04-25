@@ -47,7 +47,7 @@ class Tag {
 	}
 
 	public function getPrice() : int {
-		return $this->properties["price"] ?? Main::getInstance()->getConfig()->get("default-price", 1000);
+		return $this->properties["price"] ?? Main::getInstance()->getConfig()->get("default-tag-price", 1000);
 	}
 
 }

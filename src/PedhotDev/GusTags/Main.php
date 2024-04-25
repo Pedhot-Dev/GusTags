@@ -28,6 +28,8 @@ declare(strict_types=1);
 
 namespace PedhotDev\GusTags;
 
+use DaPigGuy\libPiggyEconomy\libPiggyEconomy;
+use DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
 use PedhotDev\GusTags\tags\TagManager;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
@@ -40,14 +42,20 @@ class Main extends PluginBase {
 
 	private TagManager $tagManager;
 
+	private EconomyProvider $economyProvider;
+
 	protected function onLoad() : void {
 		self::setInstance($this);
 	}
 
 	protected function onEnable() : void {
+        $this->saveDefaultConfig();
+		$this->saveResource("tags.yml");
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		$this->tagConfig = new Config($this->getDataFolder() . "tags.yml");
 		$this->tagManager = new TagManager($this);
+		libPiggyEconomy::init();
+		$this->economyProvider = libPiggyEconomy::getProvider($this->getConfig()->get("economy"));
 	}
 
 	public function getTagConfig() : Config {
@@ -56,6 +64,10 @@ class Main extends PluginBase {
 
 	public function getTagManager() : TagManager {
 		return $this->tagManager;
+	}
+
+	public function getEconomyProvider() : EconomyProvider {
+		return $this->economyProvider;
 	}
 
 }
