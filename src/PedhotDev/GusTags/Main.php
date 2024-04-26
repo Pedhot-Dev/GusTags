@@ -45,6 +45,8 @@ class Main extends PluginBase {
 
 	private Config $tagConfig;
 
+	private Config $database;
+
 	private TagManager $tagManager;
 
 	private SessionManager $sessionManager;
@@ -62,6 +64,7 @@ class Main extends PluginBase {
 		$this->saveResource("tags.yml");
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		$this->tagConfig = new Config($this->getDataFolder() . "tags.yml");
+		$this->database = new Config($this->getDataFolder() . "database.yml");
 		$this->tagManager = new TagManager($this);
 		$this->sessionManager = new SessionManager($this);
 		$this->formManager = new FormManager($this);
@@ -69,8 +72,17 @@ class Main extends PluginBase {
 		$this->economyProvider = libPiggyEconomy::getProvider($this->getConfig()->get("economy"));
 	}
 
+	protected function onDisable() : void {
+		$this->tagConfig->save();
+		$this->database->save();
+	}
+
 	public function getTagConfig() : Config {
 		return $this->tagConfig;
+	}
+
+	public function getDatabase() : Config {
+		return $this->database;
 	}
 
 	public function getTagManager() : TagManager {

@@ -30,6 +30,9 @@ namespace PedhotDev\GusTags;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerQuitEvent;
+use function str_replace;
+use function strtolower;
 
 class EventListener implements Listener {
 
@@ -39,6 +42,17 @@ class EventListener implements Listener {
 		$player = $event->getPlayer();
 		$nameTag = $player->getNameTag();
 		$displayName = $player->getDisplayName();
+		$sessionManager = $this->plugin->getSessionManager();
+		$sessionManager->register($player, $this->plugin->getDatabase()->get(strtolower($player->getName())));
+		$player->setNameTag(str_replace("{gustag.tag}", $sessionManager->getSession($player)->getEquippedTag() ?? "", $nameTag));
+		$player->setDisplayName(str_replace("{gustag.tag}", $sessionManager->getSession($player)->getEquippedTag() ?? "", $displayName));
+	}
+
+	public function onQuit(PlayerQuitEvent $event) {
+		$player = $event->getPlayer();
+		$sessionManager = $this->plugin->getSessionManager();
+		$session = $sessionManager->getSession($player);
+		$this->plugin->getDatabase()->set(strtolower($player->getName()), $session->getProperties());
 	}
 
 }
