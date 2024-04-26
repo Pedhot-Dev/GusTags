@@ -36,73 +36,73 @@ use Vecnavium\FormsUI\SimpleForm;
 
 class FormManager {
 
-    private $buyTagCallable, $equipTagCallable, $confirmBuyTagCallable, $confirmEquipTagCallable;
+	private $buyTagCallable, $equipTagCallable, $confirmBuyTagCallable, $confirmEquipTagCallable;
 
-    public function __construct(private Main $plugin) {
-        $this->buyTagCallable = function (Player $player, $data): void {
-            if ($data == null) return;
-            if ($data === 0) return;
-            $tag = $this->plugin->getTagManager()->getTag($data);
-            if (!$tag instanceof Tag) return;
-            $this->sendFormConfirmation($player, $tag, true);
-        };
-        $this->equipTagCallable = function (Player $player, $data): void {
-            if ($data == null) return;
-            if ($data === 0) return;
-            $tag = $this->plugin->getTagManager()->getTag($data);
-            $this->sendFormConfirmation($player, $tag, false);
-        };
-        $this->confirmBuyTagCallable = function (Player $player, $data): void {
-            if ($data == null) return;
-            if ($data === 1) return;
-            $tag = $this->plugin->getTagManager()->getTag($data);
-            $this->plugin->getEconomyProvider()->takeMoney($player, $tag->getPrice(), function (bool $success) use ($player, $tag) {
-                if ($success) {
-                    if ($this->plugin->getSessionManager()->getSession($player)->buyTag($tag)) {
-                        $player->sendMessage("Tag " . $tag->getDisplayName() . TextFormat::RESET . " telah terbeli, anda sekarang bisa menggunakannya dengan menggunakan command /tag use");
-                    }
-                }else {
-                    $player->sendMessage("Gagal membeli tag dengan alasan yang tidak diketahui");
-                }
-            });
-        };
-        $this->confirmEquipTagCallable = function (Player $player, $data): void {
-            if ($data == null) return;
-            if ($data === 1) return;
-            $tag = $this->plugin->getTagManager()->getTag($data);
-            $this->plugin->getSessionManager()->getSession($player)->setEquippedTag($tag);
-            $player->sendMessage("Berhasil menggunakan tag " . $tag->getDisplayName());
-        };
-    }
+	public function __construct(private Main $plugin) {
+		$this->buyTagCallable = function (Player $player, $data) : void {
+			if ($data == null) return;
+			if ($data === 0) return;
+			$tag = $this->plugin->getTagManager()->getTag($data);
+			if (!$tag instanceof Tag) return;
+			$this->sendFormConfirmation($player, $tag, true);
+		};
+		$this->equipTagCallable = function (Player $player, $data) : void {
+			if ($data == null) return;
+			if ($data === 0) return;
+			$tag = $this->plugin->getTagManager()->getTag($data);
+			$this->sendFormConfirmation($player, $tag, false);
+		};
+		$this->confirmBuyTagCallable = function (Player $player, $data) : void {
+			if ($data == null) return;
+			if ($data === 1) return;
+			$tag = $this->plugin->getTagManager()->getTag($data);
+			$this->plugin->getEconomyProvider()->takeMoney($player, $tag->getPrice(), function (bool $success) use ($player, $tag) {
+				if ($success) {
+					if ($this->plugin->getSessionManager()->getSession($player)->buyTag($tag)) {
+						$player->sendMessage("Tag " . $tag->getDisplayName() . TextFormat::RESET . " telah terbeli, anda sekarang bisa menggunakannya dengan menggunakan command /tag use");
+					}
+				}else {
+					$player->sendMessage("Gagal membeli tag dengan alasan yang tidak diketahui");
+				}
+			});
+		};
+		$this->confirmEquipTagCallable = function (Player $player, $data) : void {
+			if ($data == null) return;
+			if ($data === 1) return;
+			$tag = $this->plugin->getTagManager()->getTag($data);
+			$this->plugin->getSessionManager()->getSession($player)->setEquippedTag($tag);
+			$player->sendMessage("Berhasil menggunakan tag " . $tag->getDisplayName());
+		};
+	}
 
-    public function sendFormBuyTag(Player $player): void {
-        $form = new SimpleForm($this->buyTagCallable);
-        $form->setTitle("Beli tag");
-        $form->addButton("Keluar");
-        foreach ($this->plugin->getSessionManager()->getSession($player)->getUnpurchasedTags() as $tag) {
-            $form->addButton($tag->getDisplayName() . TextFormat::RESET . "\n" . $this->plugin->getEconomyProvider()->getMonetaryUnit() . $tag->getPrice(), -1, "", $tag->getName());
-        }
-        $form->sendToPlayer($player);
-    }
+	public function sendFormBuyTag(Player $player) : void {
+		$form = new SimpleForm($this->buyTagCallable);
+		$form->setTitle("Beli tag");
+		$form->addButton("Keluar");
+		foreach ($this->plugin->getSessionManager()->getSession($player)->getUnpurchasedTags() as $tag) {
+			$form->addButton($tag->getDisplayName() . TextFormat::RESET . "\n" . $this->plugin->getEconomyProvider()->getMonetaryUnit() . $tag->getPrice(), -1, "", $tag->getName());
+		}
+		$form->sendToPlayer($player);
+	}
 
-    public function sendFormEquipTag(Player $player): void {
-        $form = new SimpleForm($this->equipTagCallable);
-        $form->setTitle("Gunakan tag");
-        $form->setContent($this->plugin->getSessionManager()->getSession($player)->getEquippedTag() == null ? "" : "Sekarang anda menggunakan tag " . $this->plugin->getSessionManager()->getSession($player)->getEquippedTag());
-        $form->addButton("Keluar");
-        foreach ($this->plugin->getSessionManager()->getSession($player)->getPurchasedTags() as $tag) {
-            $form->addButton($tag->getDisplayName() . TextFormat::RESET . "\n" . $this->plugin->getEconomyProvider()->getMonetaryUnit() . $tag->getPrice(), -1, "", $tag->getName());
-        }
-        $form->sendToPlayer($player);
-    }
+	public function sendFormEquipTag(Player $player) : void {
+		$form = new SimpleForm($this->equipTagCallable);
+		$form->setTitle("Gunakan tag");
+		$form->setContent($this->plugin->getSessionManager()->getSession($player)->getEquippedTag() == null ? "" : "Sekarang anda menggunakan tag " . $this->plugin->getSessionManager()->getSession($player)->getEquippedTag());
+		$form->addButton("Keluar");
+		foreach ($this->plugin->getSessionManager()->getSession($player)->getPurchasedTags() as $tag) {
+			$form->addButton($tag->getDisplayName() . TextFormat::RESET . "\n" . $this->plugin->getEconomyProvider()->getMonetaryUnit() . $tag->getPrice(), -1, "", $tag->getName());
+		}
+		$form->sendToPlayer($player);
+	}
 
-    public function sendFormConfirmation(Player $player, Tag $tag, bool $isBuy): void {
-        $form = new SimpleForm($isBuy ? $this->confirmBuyTagCallable : $this->confirmEquipTagCallable);
-        $form->setTitle("Konfirmasi");
-        $form->setContent($isBuy ? "Apakah anda yakin ingin membeli tag " . $tag->getDisplayName() . TextFormat::RESET . " seharga " . TextFormat::GREEN . $this->plugin->getEconomyProvider()->getMonetaryUnit() . $tag->getPrice() . TextFormat::RESET . "?\n\n\n\n\n\n" : "Apakah anda yakin ingin menggunakan tag " . $tag->getDisplayName() . TextFormat::RESET . "?\n\n\n\n\n\n");
-        $form->addButton("Ya", -1, "", $tag->getName());
-        $form->addButton("Tidak");
-        $form->sendToPlayer($player);
-    }
+	public function sendFormConfirmation(Player $player, Tag $tag, bool $isBuy) : void {
+		$form = new SimpleForm($isBuy ? $this->confirmBuyTagCallable : $this->confirmEquipTagCallable);
+		$form->setTitle("Konfirmasi");
+		$form->setContent($isBuy ? "Apakah anda yakin ingin membeli tag " . $tag->getDisplayName() . TextFormat::RESET . " seharga " . TextFormat::GREEN . $this->plugin->getEconomyProvider()->getMonetaryUnit() . $tag->getPrice() . TextFormat::RESET . "?\n\n\n\n\n\n" : "Apakah anda yakin ingin menggunakan tag " . $tag->getDisplayName() . TextFormat::RESET . "?\n\n\n\n\n\n");
+		$form->addButton("Ya", -1, "", $tag->getName());
+		$form->addButton("Tidak");
+		$form->sendToPlayer($player);
+	}
 
 }

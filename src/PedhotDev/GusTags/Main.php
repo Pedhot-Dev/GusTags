@@ -39,9 +39,9 @@ use pocketmine\utils\SingletonTrait;
 
 class Main extends PluginBase {
 	use SingletonTrait {
-        setInstance as private;
-        reset as private;
-    }
+		setInstance as private;
+		reset as private;
+	}
 
 	private Config $tagConfig;
 
@@ -77,9 +77,9 @@ class Main extends PluginBase {
 		return $this->tagManager;
 	}
 
-    public function getSessionManager(): SessionManager {
-        return $this->sessionManager;
-    }
+	public function getSessionManager() : SessionManager {
+		return $this->sessionManager;
+	}
 
 	public function getEconomyProvider() : EconomyProvider {
 		return $this->economyProvider;

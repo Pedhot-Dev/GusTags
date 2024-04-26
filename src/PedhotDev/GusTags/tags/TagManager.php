@@ -40,11 +40,11 @@ class TagManager {
 		$this->registerAll();
 	}
 
-    public function getTag(string $name): ?Tag {
-        $name = strtolower($name);
-        if (!$this->exists($name)) return null;
-        return $this->tags[$name];
-    }
+	public function getTag(string $name) : ?Tag {
+		$name = strtolower($name);
+		if (!$this->exists($name)) return null;
+		return $this->tags[$name];
+	}
 
 	public function register(string $name, array $properties) : bool {
 		$name = strtolower($name);
@@ -73,8 +73,8 @@ class TagManager {
 		}
 	}
 
-    public function getTags(): array {
-        return $this->tags;
-    }
+	public function getTags() : array {
+		return $this->tags;
+	}
 
 }

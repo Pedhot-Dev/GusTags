@@ -29,22 +29,21 @@ declare(strict_types=1);
 namespace PedhotDev\GusTags\sessions;
 
 use PedhotDev\GusTags\Main;
-use PedhotDev\GusTags\tags\Tag;
 use pocketmine\player\Player;
 use function strtolower;
 
 class SessionManager {
 
-    /** @var Session[] $sessions */
+	/** @var Session[] $sessions */
 	private array $sessions;
 
 	public function __construct(private Main $plugin) {}
 
-    public function getSession(Player $player): ?Session {
-        $name = strtolower($player->getName());
-        if (!$this->exists($player)) return null;
-        return $this->sessions[$name];
-    }
+	public function getSession(Player $player) : ?Session {
+		$name = strtolower($player->getName());
+		if (!$this->exists($player)) return null;
+		return $this->sessions[$name];
+	}
 
 	public function register(Player $player, array $properties) : bool {
 		$name = strtolower($player->getName());
@@ -54,7 +53,7 @@ class SessionManager {
 	}
 
 	public function unregister(Player $player) : bool {
-        $name = strtolower($player->getName());
+		$name = strtolower($player->getName());
 		if(!$this->exists($player)) return false;
 		unset($this->sessions[$name]);
 		return true;
@@ -64,8 +63,8 @@ class SessionManager {
 		return isset($this->sessions[strtolower($player->getName())]);
 	}
 
-    public function getSessions(): array {
-        return $this->sessions;
-    }
+	public function getSessions() : array {
+		return $this->sessions;
+	}
 
 }
