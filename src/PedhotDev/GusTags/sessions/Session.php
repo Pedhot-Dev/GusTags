@@ -39,7 +39,15 @@ use function strtolower;
 class Session
 {
 
-	public function __construct(private Player $player, private array $properties) {}
+	public function __construct(private Player $player, private array $properties) {
+		$purchasedTags = $this->properties["purchased_tags"];
+		foreach ($purchasedTags as $tag) {
+			if (!Main::getInstance()->getTagManager()->exists($tag)) return;
+			$this->properties["purchased_tags"][$tag] = Main::getInstance()->getTagManager()->getTag($tag);
+		}
+		$this->setPurchasedTags(array_map(fn(string $tag) => Main::getInstance()->getTagManager()->getTag($tag), $purchasedTags));
+		$this->setEquippedTag($this->properties["equipped_tag"] ?? $this->player->getXuid());
+	}
 
 	public function getPlayer() : Player {
 		return $this->player;
@@ -50,36 +58,42 @@ class Session
 	}
 
 	public function getEquippedTag() : ?Tag {
-		return Main::getInstance()->getTagManager()->getTag(($this->properties["equipped-tag"] ?? $this->player->getXuid()));
+		return $this->properties["equipped_tag"];
 	}
 
 	public function setEquippedTag(Tag|string $tag) : bool {
-		if ($tag instanceof Tag) {
-			$tag = $tag->getName();
+		if (is_string($tag)) {
+			$tag = Main::getInstance()->getTagManager()->getTag($tag);
 		}
-		$tag = strtolower($tag);
-		$this->properties["equipped-tag"] = Main::getInstance()->getTagManager()->exists($tag) ? $tag : null;
+		$this->properties["equipped_tag"] = $tag;
+		
 		return true;
 	}
 
 	/**
-	 * @return ?Tag[]
+	 * @return Tag[]
 	 */
-	public function getPurchasedTags() : ?array {
-		$purchasedTags = $this->properties["purchased-tags"] ?? [];
-		if (empty($purchasedTags)) return null;
-		return array_map(fn(string $tag) => Main::getInstance()->getTagManager()->getTag($tag), $purchasedTags);
+	public function getPurchasedTags() : array {
+		$purchasedTags = $this->properties["purchased_tags"] ?? [];
+		if (empty($purchasedTags)) return [];
+		// $tags = [];
+		// foreach ($purchasedTags as $tag) {
+		// 	$tags[strtolower($tag)] = Main::getInstance()->getTagManager()->getTag($tag);
+		// }
+		// return $tags;
+		// return array_map(fn(string $tag) => Main::getInstance()->getTagManager()->getTag($tag), $purchasedTags);
+		return $purchasedTags;
 	}
 
 	public function setPurchasedTags(array $tags) : void {
-		$this->properties["purchased-tags"] = $tags;
+		$this->properties["purchased_tags"] = $tags;
 	}
 
 	/**
 	 * @return Tag[]
 	 */
 	public function getUnpurchasedTags() : array {
-		$purchasedTags = $this->properties["purchased-tags"] ?? [];
+		$purchasedTags = $this->properties["purchased_tags"] ?? [];
 		if (empty($purchasedTags)) {
 			return Main::getInstance()->getTagManager()->getTags();
 		}

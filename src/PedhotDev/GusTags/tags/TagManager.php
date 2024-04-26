@@ -60,8 +60,8 @@ class TagManager {
 		return true;
 	}
 
-	public function exists(string $name) : bool {
-		return isset($this->tags[strtolower($name)]);
+	public function exists(?string $name) : bool {
+		return $name === null ? false : isset($this->tags[strtolower($name)]);
 	}
 
 	public function registerAll() : void {

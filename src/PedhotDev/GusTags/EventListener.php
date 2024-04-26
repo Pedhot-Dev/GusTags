@@ -28,6 +28,7 @@ declare(strict_types=1);
 
 namespace PedhotDev\GusTags;
 
+use PedhotDev\GusTags\tags\Tag;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -43,16 +44,28 @@ class EventListener implements Listener {
 		$nameTag = $player->getNameTag();
 		$displayName = $player->getDisplayName();
 		$sessionManager = $this->plugin->getSessionManager();
-		$sessionManager->register($player, $this->plugin->getDatabase()->get(strtolower($player->getName())));
-		$player->setNameTag(str_replace("{gustag.tag}", $sessionManager->getSession($player)->getEquippedTag() ?? "", $nameTag));
-		$player->setDisplayName(str_replace("{gustag.tag}", $sessionManager->getSession($player)->getEquippedTag() ?? "", $displayName));
+		$sessionManager->register($player, $this->plugin->getDatabase()->get(strtolower($player->getName()), ["purchased_tags" => []]));
+		$equippedTag = $sessionManager->getSession($player)->getEquippedTag();
+		$player->setNameTag(str_replace("{gustags.tag}", $equippedTag == null ? "" : $equippedTag->getDisplayName(), $nameTag));
+		$player->setDisplayName(str_replace("{gustags.tag}", $equippedTag == null ? "" : $equippedTag->getDisplayName(), $displayName));
 	}
 
 	public function onQuit(PlayerQuitEvent $event) {
 		$player = $event->getPlayer();
 		$sessionManager = $this->plugin->getSessionManager();
 		$session = $sessionManager->getSession($player);
-		$this->plugin->getDatabase()->set(strtolower($player->getName()), $session->getProperties());
+		$equippedTag = $session->getProperties()["equipped_tag"];
+		switch (true) {
+			case $equippedTag instanceof Tag:
+				$tag = strtolower($equippedTag->getName());
+				break;
+			case is_string($equippedTag):
+				$tag = strtolower($equippedTag);
+				break;
+		}
+		$properties["equipped_tag"] = $tag;
+		$properties["purchased_tags"] = array_map(fn (Tag $tag) => $tag->getName(), $session->getProperties()["purchased_tags"]);
+		$this->plugin->getDatabase()->set(strtolower($player->getName()), $properties);
 	}
 
 }

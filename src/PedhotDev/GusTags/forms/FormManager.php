@@ -76,6 +76,10 @@ class FormManager {
 	}
 
 	public function sendFormBuyTag(Player $player) : void {
+		if (count($this->plugin->getSessionManager()->getSession($player)->getUnpurchasedTags()) === 0) {
+			$player->sendMessage("Kamu telah memiliki semua tag");
+			return;
+		}
 		$form = new SimpleForm($this->buyTagCallable);
 		$form->setTitle("Beli tag");
 		$form->addButton("Keluar");
@@ -86,12 +90,16 @@ class FormManager {
 	}
 
 	public function sendFormEquipTag(Player $player) : void {
+		if (count($this->plugin->getSessionManager()->getSession($player)->getPurchasedTags()) === 0) {
+			$player->sendMessage("Kamu tidak punya tag apapun");
+			return;
+		}
 		$form = new SimpleForm($this->equipTagCallable);
 		$form->setTitle("Gunakan tag");
 		$form->setContent($this->plugin->getSessionManager()->getSession($player)->getEquippedTag() == null ? "" : "Sekarang anda menggunakan tag " . $this->plugin->getSessionManager()->getSession($player)->getEquippedTag());
 		$form->addButton("Keluar");
 		foreach ($this->plugin->getSessionManager()->getSession($player)->getPurchasedTags() as $tag) {
-			$form->addButton($tag->getDisplayName() . TextFormat::RESET . "\n" . $this->plugin->getEconomyProvider()->getMonetaryUnit() . $tag->getPrice(), -1, "", $tag->getName());
+			$form->addButton($tag->getDisplayName(), -1, "", $tag->getName());
 		}
 		$form->sendToPlayer($player);
 	}
