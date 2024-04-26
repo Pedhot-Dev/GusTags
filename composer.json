@@ -15,7 +15,8 @@
         "pocketmine/pocketmine-mp": "^5.14.1",
         "thebigcrafter/commando": "dev-master",
         "dapigguy/libpiggyeconomy": "dev-master",
-        "vecnavium/formsui": "dev-master"
+        "vecnavium/formsui": "dev-master",
+        "muqsit/simple-packet-handler": "dev-pm5"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "dev-master"
