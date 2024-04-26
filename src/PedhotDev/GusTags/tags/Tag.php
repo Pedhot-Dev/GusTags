@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace PedhotDev\GusTags\tags;
 
 use PedhotDev\GusTags\Main;
+use pocketmine\utils\TextFormat;
 
 class Tag {
 
@@ -43,7 +44,7 @@ class Tag {
 	}
 
 	public function getDisplayName() : string {
-		return $this->properties["display"] ?? $this->name;
+		return TextFormat::colorize($this->properties["display"] ?? $this->name);
 	}
 
 	public function getPrice() : int {

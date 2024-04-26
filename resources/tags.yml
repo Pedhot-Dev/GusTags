@@ -1,13 +1,13 @@
 # the name of tag, unique
-rich:
-  # tag display name, you can use (&) for coloring
-  display: "&l&eRich"
-  # tag price, -1 if its free for all player
-  price: 5000000000
-
-# the name of tag, unique
 newbie:
   # tag display name, you can use (&) for coloring
   display: "&l&7Newbie"
   # tag price, 0 if its free for all player
   price: 0
+  
+# the name of tag, unique
+rich:
+  # tag display name, you can use (&) for coloring
+  display: "&l&eRich"
+  # tag price, -1 if its free for all player
+  price: 5000000000

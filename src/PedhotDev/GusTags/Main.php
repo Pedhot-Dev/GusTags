@@ -30,17 +30,26 @@ namespace PedhotDev\GusTags;
 
 use DaPigGuy\libPiggyEconomy\libPiggyEconomy;
 use DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
+use PedhotDev\GusTags\forms\FormManager;
+use PedhotDev\GusTags\sessions\SessionManager;
 use PedhotDev\GusTags\tags\TagManager;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
 
 class Main extends PluginBase {
-	use SingletonTrait;
+	use SingletonTrait {
+        setInstance as private;
+        reset as private;
+    }
 
 	private Config $tagConfig;
 
 	private TagManager $tagManager;
+
+	private SessionManager $sessionManager;
+
+	private FormManager $formManager;
 
 	private EconomyProvider $economyProvider;
 
@@ -54,6 +63,8 @@ class Main extends PluginBase {
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		$this->tagConfig = new Config($this->getDataFolder() . "tags.yml");
 		$this->tagManager = new TagManager($this);
+		$this->sessionManager = new SessionManager($this);
+		$this->formManager = new FormManager($this);
 		libPiggyEconomy::init();
 		$this->economyProvider = libPiggyEconomy::getProvider($this->getConfig()->get("economy"));
 	}
@@ -65,6 +76,10 @@ class Main extends PluginBase {
 	public function getTagManager() : TagManager {
 		return $this->tagManager;
 	}
+
+    public function getSessionManager(): SessionManager {
+        return $this->sessionManager;
+    }
 
 	public function getEconomyProvider() : EconomyProvider {
 		return $this->economyProvider;
