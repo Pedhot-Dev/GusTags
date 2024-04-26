@@ -59,7 +59,7 @@ class FormManager {
 			$this->plugin->getEconomyProvider()->takeMoney($player, $tag->getPrice(), function (bool $success) use ($player, $tag) {
 				if ($success) {
 					if ($this->plugin->getSessionManager()->getSession($player)->buyTag($tag)) {
-						$player->sendMessage("Tag " . $tag->getDisplayName() . TextFormat::RESET . " telah terbeli, anda sekarang bisa menggunakannya dengan menggunakan command /tag use");
+						$player->sendMessage("Tag " . $tag->getDisplayName() . TextFormat::RESET . " telah terbeli, anda sekarang bisa menggunakannya dengan menggunakan command /tag");
 					}
 				}else {
 					$player->sendMessage("Gagal membeli tag dengan alasan yang tidak diketahui");

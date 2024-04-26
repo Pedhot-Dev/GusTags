@@ -1,0 +1,14 @@
+name: GusTags
+api: 5.0.0
+version: 0.1.0
+main: PedhotDev\GusTags\Main
+authors:
+  - PedhotDev
+
+permissions:
+  gustags.tag.command:
+    default: true
+    description: Permission for use /tag command
+  gustags.buytag.command:
+    default: true
+    description: Permission for use /buytag command

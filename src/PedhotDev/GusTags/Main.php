@@ -28,8 +28,11 @@ declare(strict_types=1);
 
 namespace PedhotDev\GusTags;
 
+use CortexPE\Commando\PacketHooker;
 use DaPigGuy\libPiggyEconomy\libPiggyEconomy;
 use DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
+use PedhotDev\GusTags\commands\BuyTagCommand;
+use PedhotDev\GusTags\commands\TagCommand;
 use PedhotDev\GusTags\forms\FormManager;
 use PedhotDev\GusTags\sessions\SessionManager;
 use PedhotDev\GusTags\tags\TagManager;
@@ -63,6 +66,13 @@ class Main extends PluginBase {
 		$this->saveDefaultConfig();
 		$this->saveResource("tags.yml");
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+		if (!PacketHooker::isRegistered()) {
+			PacketHooker::register($this);
+		}
+		$this->getServer()->getCommandMap()->registerAll($this->getName(), [
+			new BuyTagCommand($this, "buytag", "Beli tag"),
+			new TagCommand($this, "tag", "Gunakan tag yang sudah terbeli"),
+		]);
 		$this->tagConfig = new Config($this->getDataFolder() . "tags.yml");
 		$this->database = new Config($this->getDataFolder() . "database.yml");
 		$this->tagManager = new TagManager($this);
@@ -91,6 +101,10 @@ class Main extends PluginBase {
 
 	public function getSessionManager() : SessionManager {
 		return $this->sessionManager;
+	}
+
+	public function getFormManager() : FormManager {
+		return $this->formManager;
 	}
 
 	public function getEconomyProvider() : EconomyProvider {
