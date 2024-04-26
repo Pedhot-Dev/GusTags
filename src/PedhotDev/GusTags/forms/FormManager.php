@@ -94,9 +94,10 @@ class FormManager {
 			$player->sendMessage("Kamu tidak punya tag apapun");
 			return;
 		}
+		$equippedTag = $this->plugin->getSessionManager()->getSession($player)->getEquippedTag();
 		$form = new SimpleForm($this->equipTagCallable);
 		$form->setTitle("Gunakan tag");
-		$form->setContent($this->plugin->getSessionManager()->getSession($player)->getEquippedTag() == null ? "" : "Sekarang anda menggunakan tag " . $this->plugin->getSessionManager()->getSession($player)->getEquippedTag());
+		$form->setContent($equippedTag == null ? "" : "Sekarang anda menggunakan tag " . $equippedTag->getDisplayName());
 		$form->addButton("Keluar");
 		foreach ($this->plugin->getSessionManager()->getSession($player)->getPurchasedTags() as $tag) {
 			$form->addButton($tag->getDisplayName(), -1, "", $tag->getName());

@@ -99,8 +99,8 @@ class Session
 		}
 		$tags = Main::getInstance()->getTagManager()->getTags();
 		foreach ($purchasedTags as $purchasedTag) {
-			if (Main::getInstance()->getTagManager()->exists($purchasedTag)) {
-				unset($tags[$purchasedTag]);
+			if ($purchasedTag instanceof Tag) {
+				unset($tags[$purchasedTag->getName()]);
 			}
 		}
 		return $tags;
