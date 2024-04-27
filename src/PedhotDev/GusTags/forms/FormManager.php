@@ -32,7 +32,7 @@ use PedhotDev\GusTags\Main;
 use PedhotDev\GusTags\tags\Tag;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
-use Vecnavium\FormsUI\SimpleForm;
+use PedhotDev\GusTags\libs\_d343a7d29c248413\Vecnavium\FormsUI\SimpleForm;
 
 class FormManager {
 

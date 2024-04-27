@@ -28,9 +28,9 @@ declare(strict_types=1);
 
 namespace PedhotDev\GusTags;
 
-use CortexPE\Commando\PacketHooker;
-use DaPigGuy\libPiggyEconomy\libPiggyEconomy;
-use DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
+use PedhotDev\GusTags\libs\_d343a7d29c248413\CortexPE\Commando\PacketHooker;
+use PedhotDev\GusTags\libs\_d343a7d29c248413\DaPigGuy\libPiggyEconomy\libPiggyEconomy;
+use PedhotDev\GusTags\libs\_d343a7d29c248413\DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
 use IvanCraft623\RankSystem\session\Session;
 use IvanCraft623\RankSystem\tag\Tag;
 use IvanCraft623\RankSystem\tag\TagManager as RSTM;
