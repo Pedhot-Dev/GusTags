@@ -32,7 +32,7 @@ use PedhotDev\GusTags\Main;
 use PedhotDev\GusTags\tags\Tag;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
-use PedhotDev\GusTags\libs\_936fc16643b25771\Vecnavium\FormsUI\SimpleForm;
+use PedhotDev\GusTags\libs\_f3d90c01c6648968\Vecnavium\FormsUI\SimpleForm;
 use function count;
 use function substr;
 
@@ -113,7 +113,7 @@ class FormManager {
 		$equippedTag = $this->plugin->getSessionManager()->getSession($player)->getEquippedTag();
 		$form = new SimpleForm($this->equipTagCallable);
 		$form->setTitle("Gunakan tag (" . count($this->plugin->getSessionManager()->getSession($player)->getPurchasedTags()) . "/" . count($this->plugin->getTagManager()->getTags()) . ")");
-		$form->setContent($equippedTag == null ? "" : "Sekarang anda menggunakan tag " . $equippedTag->getDisplayName());
+		$form->setContent($equippedTag == null ?: "Sekarang anda menggunakan tag " . $equippedTag->getDisplayName());
 		$form->addButton("Keluar");
 		foreach ($this->plugin->getSessionManager()->getSession($player)->getPurchasedTags() as $tag) {
 			$form->addButton($tag->getDisplayName(), -1, "", $tag->getName());

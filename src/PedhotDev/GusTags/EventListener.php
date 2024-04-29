@@ -34,7 +34,6 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use function array_map;
 use function is_string;
-use function str_replace;
 use function strtolower;
 
 class EventListener implements Listener {
@@ -43,13 +42,8 @@ class EventListener implements Listener {
 
 	public function onJoin(PlayerJoinEvent $event) {
 		$player = $event->getPlayer();
-		$nameTag = $player->getNameTag();
-		$displayName = $player->getDisplayName();
 		$sessionManager = $this->plugin->getSessionManager();
 		$sessionManager->register($player, $this->plugin->getDatabase()->get(strtolower($player->getName()), ["purchased_tags" => []]));
-		$equippedTag = $sessionManager->getSession($player)->getEquippedTag();
-		$player->setNameTag(str_replace("{gustags.tag}", $equippedTag == null ? "" : $equippedTag->getDisplayName(), $nameTag));
-		$player->setDisplayName(str_replace("{gustags.tag}", $equippedTag == null ? "" : $equippedTag->getDisplayName(), $displayName));
 	}
 
 	public function onQuit(PlayerQuitEvent $event) {

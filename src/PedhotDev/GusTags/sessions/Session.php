@@ -38,7 +38,6 @@ use function array_keys;
 use function array_map;
 use function in_array;
 use function is_string;
-use function strtolower;
 
 class Session
 {
@@ -53,7 +52,7 @@ class Session
 		$this->setEquippedTag($this->properties["equipped_tag"] ?? $this->player->getXuid());
 		$equippedTag = $this->getEquippedTag();
 		RSTagManager::getInstance()->registerTag(new RSTag("gustags.tag", static function(RSSession $user) use ($equippedTag) : string {
-			return $equippedTag == null ? "" : $equippedTag->getDisplayName();
+			return $equippedTag == null ?: $equippedTag->getDisplayName();
 		}));
 	}
 
