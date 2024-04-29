@@ -28,12 +28,16 @@ declare(strict_types=1);
 
 namespace PedhotDev\GusTags\sessions;
 
+use IvanCraft623\RankSystem\session\Session as RSSession;
+use IvanCraft623\RankSystem\tag\Tag as RSTag;
+use IvanCraft623\RankSystem\tag\TagManager as RSTagManager;
 use PedhotDev\GusTags\Main;
 use PedhotDev\GusTags\tags\Tag;
 use pocketmine\player\Player;
 use function array_keys;
 use function array_map;
 use function in_array;
+use function is_string;
 use function strtolower;
 
 class Session
@@ -47,6 +51,10 @@ class Session
 		}
 		$this->setPurchasedTags(array_map(fn(string $tag) => Main::getInstance()->getTagManager()->getTag($tag), $purchasedTags));
 		$this->setEquippedTag($this->properties["equipped_tag"] ?? $this->player->getXuid());
+		$equippedTag = $this->getEquippedTag();
+		RSTagManager::getInstance()->registerTag(new RSTag("gustags.tag", static function(RSSession $user) use ($equippedTag) : string {
+			return $equippedTag == null ? "" : $equippedTag->getDisplayName();
+		}));
 	}
 
 	public function getPlayer() : Player {
@@ -66,7 +74,7 @@ class Session
 			$tag = Main::getInstance()->getTagManager()->getTag($tag);
 		}
 		$this->properties["equipped_tag"] = $tag;
-		
+
 		return true;
 	}
 

@@ -1,0 +1,53 @@
+{
+    "name": "ivancraft623/ranksystem",
+    "description": "A rank and permissions manager for PocketMine-MP",
+    "type": "project",
+    "license": "Apache-2.0",
+    "require": {
+        "latampmdevs/commando": "dev-pm5",
+        "latampmdevs/config-updater": "dev-master",
+        "latampmdevs/update-notifier": "dev-master",
+        "latampmdevs/formapi": "dev-master",
+        "ivancraft623/languages": "dev-main",
+        "sof3/libasynql": "dev-pm5"
+    },
+    "require-dev": {
+        "php": "^8.0",
+        "pocketmine/pocketmine-mp": "^5.3.0",
+        "phpstan/phpstan": "1.10.25"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/LatamPMDevs/Commando.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/LatamPMDevs/ConfigUpdater.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/LatamPMDevs/UpdateNotifier.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/LatamPMDevs/FormAPI.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/IvanCraft623/languages.git"
+        }
+    ],
+    "minimum-stability": "dev",
+    "config": {
+        "platform": {
+            "php": "8.1"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-0": {
+            "IvanCraft623\\RankSystem\\": "src"
+        }
+    }
+}
