@@ -50,10 +50,6 @@ class Session
 		}
 		$this->setPurchasedTags(array_map(fn(string $tag) => Main::getInstance()->getTagManager()->getTag($tag), $purchasedTags));
 		$this->setEquippedTag($this->properties["equipped_tag"] ?? $this->player->getXuid());
-		$equippedTag = $this->getEquippedTag();
-		RSTagManager::getInstance()->registerTag(new RSTag("gustags.tag", static function(RSSession $user) use ($equippedTag) : string {
-			return $equippedTag == null ?: $equippedTag->getDisplayName();
-		}));
 	}
 
 	public function getPlayer() : Player {
@@ -73,7 +69,9 @@ class Session
 			$tag = Main::getInstance()->getTagManager()->getTag($tag);
 		}
 		$this->properties["equipped_tag"] = $tag;
-
+		RSTagManager::getInstance()->registerTag(new RSTag("gustags.tag", static function(RSSession $user) use ($tag) : string {
+			return $tag == null ?: $tag->getDisplayName();
+		}));
 		return true;
 	}
 
