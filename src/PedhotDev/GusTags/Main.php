@@ -28,9 +28,9 @@ declare(strict_types=1);
 
 namespace PedhotDev\GusTags;
 
-use PedhotDev\GusTags\libs\_268b2a2fed6f34b2\CortexPE\Commando\PacketHooker;
-use PedhotDev\GusTags\libs\_268b2a2fed6f34b2\DaPigGuy\libPiggyEconomy\libPiggyEconomy;
-use PedhotDev\GusTags\libs\_268b2a2fed6f34b2\DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
+use PedhotDev\GusTags\libs\_de08ef60a337df3f\CortexPE\Commando\PacketHooker;
+use PedhotDev\GusTags\libs\_de08ef60a337df3f\DaPigGuy\libPiggyEconomy\libPiggyEconomy;
+use PedhotDev\GusTags\libs\_de08ef60a337df3f\DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
 use PedhotDev\GusTags\commands\BuyTagCommand;
 use PedhotDev\GusTags\commands\TagCommand;
 use PedhotDev\GusTags\forms\FormManager;
