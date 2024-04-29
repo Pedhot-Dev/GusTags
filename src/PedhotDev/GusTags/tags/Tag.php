@@ -33,7 +33,7 @@ use pocketmine\utils\TextFormat;
 
 class Tag {
 
-	public function __construct(public string $name, public array $properties) {}
+	public function __construct(private string $name, private array $properties) {}
 
 	public function getName() : string {
 		return $this->name;

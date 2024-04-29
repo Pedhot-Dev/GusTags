@@ -32,7 +32,7 @@ use PedhotDev\GusTags\Main;
 use PedhotDev\GusTags\tags\Tag;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
-use PedhotDev\GusTags\libs\_f3d90c01c6648968\Vecnavium\FormsUI\SimpleForm;
+use PedhotDev\GusTags\libs\_268b2a2fed6f34b2\Vecnavium\FormsUI\SimpleForm;
 use function count;
 use function substr;
 
