@@ -32,6 +32,8 @@ use PedhotDev\GusTags\tags\Tag;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use function array_map;
+use function is_string;
 use function str_replace;
 use function strtolower;
 

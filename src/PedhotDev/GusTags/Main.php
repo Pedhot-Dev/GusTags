@@ -28,12 +28,9 @@ declare(strict_types=1);
 
 namespace PedhotDev\GusTags;
 
-use PedhotDev\GusTags\libs\_d343a7d29c248413\CortexPE\Commando\PacketHooker;
-use PedhotDev\GusTags\libs\_d343a7d29c248413\DaPigGuy\libPiggyEconomy\libPiggyEconomy;
-use PedhotDev\GusTags\libs\_d343a7d29c248413\DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
-use IvanCraft623\RankSystem\session\Session;
-use IvanCraft623\RankSystem\tag\Tag;
-use IvanCraft623\RankSystem\tag\TagManager as RSTM;
+use PedhotDev\GusTags\libs\_936fc16643b25771\CortexPE\Commando\PacketHooker;
+use PedhotDev\GusTags\libs\_936fc16643b25771\DaPigGuy\libPiggyEconomy\libPiggyEconomy;
+use PedhotDev\GusTags\libs\_936fc16643b25771\DaPigGuy\libPiggyEconomy\providers\EconomyProvider;
 use PedhotDev\GusTags\commands\BuyTagCommand;
 use PedhotDev\GusTags\commands\TagCommand;
 use PedhotDev\GusTags\forms\FormManager;

@@ -44,7 +44,7 @@ class Tag {
 	}
 
 	public function getDisplayName() : string {
-		return TextFormat::colorize($this->properties["display"] ?? $this->name);
+		return TextFormat::colorize($this->properties["display"] ?? $this->name) . TextFormat::RESET;
 	}
 
 	public function getPrice() : int {

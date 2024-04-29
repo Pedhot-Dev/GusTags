@@ -32,7 +32,9 @@ use PedhotDev\GusTags\Main;
 use PedhotDev\GusTags\tags\Tag;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
-use PedhotDev\GusTags\libs\_d343a7d29c248413\Vecnavium\FormsUI\SimpleForm;
+use PedhotDev\GusTags\libs\_936fc16643b25771\Vecnavium\FormsUI\SimpleForm;
+use function count;
+use function substr;
 
 class FormManager {
 
@@ -42,6 +44,12 @@ class FormManager {
 		$this->buyTagCallable = function (Player $player, $data) : void {
 			if ($data == null) return;
 			if ($data === 0) return;
+			if (substr($data, 0, 6) === "[paid]") {
+				$tag = $this->plugin->getTagManager()->getTag(substr($data, 7));
+				if (!$tag instanceof Tag) return;
+				$player->sendMessage("Tag " . $tag->getDisplayName() . " telah kamu beli");
+				return;
+			}
 			$tag = $this->plugin->getTagManager()->getTag($data);
 			if (!$tag instanceof Tag) return;
 			$this->sendFormConfirmation($player, $tag, true);
@@ -76,17 +84,25 @@ class FormManager {
 	}
 
 	public function sendFormBuyTag(Player $player) : void {
-		if (count($this->plugin->getSessionManager()->getSession($player)->getUnpurchasedTags()) === 0) {
-			$player->sendMessage("Kamu telah memiliki semua tag");
-			return;
-		}
+		// if (count($this->plugin->getSessionManager()->getSession($player)->getUnpurchasedTags()) === 0) {
+		// 	$player->sendMessage("Kamu telah memiliki semua tag");
+		// 	return;
+		// }
 		$form = new SimpleForm($this->buyTagCallable);
+		$tags["paid"] = $this->plugin->getSessionManager()->getSession($player)->getPurchasedTags();
+		$tags["unpaid"] = $this->plugin->getSessionManager()->getSession($player)->getUnpurchasedTags();
 		$form->setTitle("Beli tag");
 		$form->addButton("Keluar");
-		foreach ($this->plugin->getSessionManager()->getSession($player)->getUnpurchasedTags() as $tag) {
+		foreach ($tags["paid"] as $status => $tag) {
+			$form->addButton($tag->getDisplayName() . TextFormat::RESET . "\n" . TextFormat::GREEN . "Terbeli", -1, "", "[paid] " . $tag->getName());
+		}
+		foreach ($tags["unpaid"] as $status => $tag) {
 			$form->addButton($tag->getDisplayName() . TextFormat::RESET . "\n" . $this->plugin->getEconomyProvider()->getMonetaryUnit() . $tag->getPrice(), -1, "", $tag->getName());
 		}
-		$form->sendToPlayer($player);
+		$this->plugin->getEconomyProvider()->getMoney($player, function($result) use ($player, $form) {
+			$form->setContent("Uangmu ada: " . $result);
+			$form->sendToPlayer($player);
+		});
 	}
 
 	public function sendFormEquipTag(Player $player) : void {
@@ -96,7 +112,7 @@ class FormManager {
 		}
 		$equippedTag = $this->plugin->getSessionManager()->getSession($player)->getEquippedTag();
 		$form = new SimpleForm($this->equipTagCallable);
-		$form->setTitle("Gunakan tag");
+		$form->setTitle("Gunakan tag (" . count($this->plugin->getSessionManager()->getSession($player)->getPurchasedTags()) . "/" . count($this->plugin->getTagManager()->getTags()) . ")");
 		$form->setContent($equippedTag == null ? "" : "Sekarang anda menggunakan tag " . $equippedTag->getDisplayName());
 		$form->addButton("Keluar");
 		foreach ($this->plugin->getSessionManager()->getSession($player)->getPurchasedTags() as $tag) {

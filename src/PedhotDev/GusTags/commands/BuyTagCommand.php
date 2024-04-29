@@ -28,8 +28,8 @@ declare(strict_types=1);
 
 namespace PedhotDev\GusTags\commands;
 
-use PedhotDev\GusTags\libs\_d343a7d29c248413\CortexPE\Commando\BaseCommand;
-use PedhotDev\GusTags\libs\_d343a7d29c248413\CortexPE\Commando\constraint\InGameRequiredConstraint;
+use PedhotDev\GusTags\libs\_936fc16643b25771\CortexPE\Commando\BaseCommand;
+use PedhotDev\GusTags\libs\_936fc16643b25771\CortexPE\Commando\constraint\InGameRequiredConstraint;
 use PedhotDev\GusTags\Main;
 use pocketmine\command\CommandSender;
 
